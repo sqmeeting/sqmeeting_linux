@@ -18,7 +18,7 @@ SQMeeting Linux使用GCC 11 或者以上版本和Qt6.8进行编译
 CMake 3.16或更高版本
 
 ## 生成
-1. 编译安装Qt6.8，请参照Qt官方指引[Build Qt](https://wiki.qt.io/Get_the_Source)   
+1. 编译安装Qt6.8，请参照Qt官方指引[Build Qt](https://wiki.qt.io/Building_Qt_6_from_Git)   
    需要编译安装ffmpeg, 才能enable qt6的multi-media plugin.  
 2. 安装portaudio, libasound，libpulse, liblog4cplus  
    sudo apt install portaudio19-dev libasound2-dev libpulse-dev liblog4cplus-dev
