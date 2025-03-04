@@ -36,6 +36,8 @@ Rectangle {
 
     property bool authority: false
 
+    property bool isAuthority: false
+
     property bool isBySettingSpeaker:false
 
     property int row_height: 40
@@ -100,16 +102,14 @@ Rectangle {
         id: id_tableview_header
         width: parent.width
         height: 2
+        anchors.top: searchBox.bottom
 
         Image {
             id: top_line_image
-            //width: parent.width
             height: 1
-            anchors.top: searchBox.bottom
-            anchors.topMargin: 0
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.margins: 0
+            anchors.top: parent.top
             source: "qrc:/Images/SettingView/gray_line_content_select.png"
             fillMode: Image.Stretch
             visible: true
@@ -120,8 +120,7 @@ Rectangle {
         id: tableView
         width: parent.width -30
 
-        //anchors.top: id_tableview_header.bottom
-        anchors.top: searchBox.bottom
+        anchors.top: id_tableview_header.bottom
         anchors.left: parent.left
         anchors.margins: 15
         anchors.right: parent.right
@@ -224,7 +223,7 @@ Rectangle {
                             onClicked: {
                                 var rosterInfo = tableModel.getRow(0);
 
-                                if(authiority) {
+                                if(isAuthority) {
                                     rosterInfo = tableModel.getRow(row);
                                     var isSpeaker = rosterInfo.display_name.endsWith('(演讲者)');
 

@@ -3,6 +3,7 @@
 #include <QDateTime>
 #include <QtQml/QQmlEngine>
 #include <QtQml/QQmlContext>
+#include <QQuickStyle>
 
 // for init: register C++ Object for inCall QML.
 #include "FMeetingWindowController.h"
@@ -31,8 +32,7 @@
 #include "QMLFileHelper.h"
 #include "FrtcFileManager.h"
 
-//for QCamera.
-#include "UnifiedVideoCapture.h"
+
 
 //for FrtcParticipantsViewController.qml
 #include "FrtcParticipantsViewController.h"
@@ -41,7 +41,6 @@
 // for process name.
 //#include <sys/prctl.h>
 
-#include <iostream>
 #include <stdio.h>
 #include "FrtcContentSelectShowImage.h"
 
@@ -96,6 +95,9 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    // 设置默认样式为 Basic
+    QQuickStyle::setStyle("Basic");
+
     QStringList args = app.arguments();
     if (args.count() > 1) {
         QString url = args.at(1);
@@ -122,7 +124,7 @@ int main(int argc, char *argv[])
     // for FrtcCall::init: register C++ Object for inCall QML.
     FMakeCallClient::sharedCallClient();
 
-    qDebug("[%s][%d]: -> call qmlRegisterSingletonInstance(com.frtc.FrtcMediaStaticsInstanceObject, 1, 0, FrtcMediaStaticsInstanceObject, FrtcMediaStaticsInstance::sharedInstance())", Q_FUNC_INFO, __LINE__);
+    qDebug("[%s][%d]: -> call qFmlRegisterSingletonInstance(com.frtc.FrtcMediaStaticsInstanceObject, 1, 0, FrtcMediaStaticsInstanceObject, FrtcMediaStaticsInstance::sharedInstance())", Q_FUNC_INFO, __LINE__);
     qmlRegisterSingletonInstance("com.frtc.FrtcMediaStaticsInstanceObject", 1, 0, "FrtcMediaStaticsInstanceObject", FrtcMediaStaticsInstance::sharedInstance());
 
     qmlRegisterSingletonInstance("com.frtc.FrtcApiManager", 1, 0, "FrtcApiManager", FrtcApiManager::instance());

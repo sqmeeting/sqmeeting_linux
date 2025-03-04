@@ -1,6 +1,6 @@
-import QtQuick 2.0
-import QtQuick.Window 2.0
-import QtQuick.Controls 2.0
+import QtQuick 2.12
+import QtQuick.Controls 2.12
+import QtQuick.Window 2.12
 
 import "./../../../CommonView/"
 import "./"
@@ -101,7 +101,7 @@ Window {
     }
 
     function showPopup(display_name, uuid, audio_mute, index, is_speaker, user_pin) {
-        renameWindow.open(display_name, uuid, audio_mute, index, authiority, is_speaker, user_pin)
+        renameWindow.open(display_name, uuid, audio_mute, index, authiority | meetingOwner, is_speaker, user_pin)
     }
 
     function un_lecture(uuid) {
@@ -187,7 +187,9 @@ Window {
 
             pin_id: pinUUID
 
-            authority: authiority
+            authority: authiority | meetingOwner
+
+            isAuthority: authiority | meetingOwner
 
             onCellClickedCallback: showPopup
 
@@ -270,7 +272,7 @@ Window {
             border.width: 1
             border.color: "#666666"
 
-            visible: authiority
+            visible: authiority | meetingOwner
 
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 20
@@ -319,7 +321,7 @@ Window {
         border.width: 1
         border.color: "#666666"
 
-        visible: authiority
+        visible: authiority | meetingOwner
 
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20

@@ -4,6 +4,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import SDKUserDefaultObject 1.0
 import com.frtc.FrtcApiManager 1.0
+import QtQuick.Controls.Basic 2.14
 
 import "./SQMeetingComponent/UIComponent/CommonView"
 import "./SQMeetingComponent/UIComponent/OutOffCallView/FrtcHome"

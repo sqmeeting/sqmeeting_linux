@@ -80,7 +80,7 @@ public:
     
     
 public:
-    void showSVCVideoInfoArray(QString strMsg, QList<SVCVideoInfo *> *videoLayoutInfo);
+    void showSVCVideoInfoArray(QList<SVCVideoInfo *> *videoLayoutInfo);
     void svcRefreshLayoutList(QList<SVCVideoInfo *> *videoLayoutInfo);
     void clearRemoteUserInfo();
     

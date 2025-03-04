@@ -1,6 +1,5 @@
 #include "object_impl.h"
 #include "SDKContextWrapper.h"
-#include <iostream>
 
 
 const std::string SDK_VERSION = "1.0.0.1";
@@ -196,6 +195,12 @@ std::string ObjectImpl::GetUploadStatusImpl(uint64_t traction_id)
 void ObjectImpl::CancelUploadLogsImpl(uint64_t traction_id)
 {
 	_common_interface->CancelUploadLogs(traction_id);
+}
+
+void ObjectImpl::SetSystemInfoImpl(const std::string &deviceModel,
+                       const std::string &osVersion)
+{
+    _common_interface->SetSystemInfo(deviceModel, osVersion);
 }
 
 void ObjectImpl::OnMeetingJoinInfoCallBack(const std::string& meeting_name,

@@ -112,6 +112,13 @@ public:
 
     QString get_statics_info();
 
+    QString getDeviceManufacturerInfo();
+    QString readFileOneLine(const QString & fileName);
+
+#ifdef Q_OS_MAC
+    QString parseMacPlist(const QString &xmlContent);
+#endif
+
     void completion_handler(const QString& conference_name,
                       const QString& conference_number,
                       const QString& owner_id,

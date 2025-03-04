@@ -71,7 +71,7 @@ Rectangle {
 
     Text {
         id: version_text
-        text: '3.4.0'
+        text: '3.4.1'
         color: '#666666'
 
         anchors.horizontalCenter: parent.horizontalCenter
