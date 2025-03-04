@@ -281,6 +281,9 @@ public:
     std::string GetUploadStatusImpl(uint64_t traction_id);
     void CancelUploadLogsImpl(uint64_t traction_id);
 
+    void SetSystemInfoImpl(const std::string &deviceModel,
+                           const std::string &osVersion);
+
 };
 
 #endif // SDKCONTEXT_H

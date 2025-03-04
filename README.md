@@ -12,11 +12,12 @@
 支持统信UOS v20 desktop，麒麟V10 desktop, Debian 10，Debian 11  
 其他Linux发行版，也可能支持，需要测试
 
-支持x86-64和arm64 CPU架构.
+支持x86_64 CPU架构: Intel, AMD, 海光, 兆芯CPU.  
+支持arm64 CPU架构: 鲲鹏, 飞腾CPU.  
 
 ## GCC和QT版本
 
-SQMeeting Linux使用GCC 11 或者以上版本和Qt6.8进行编译
+SQMeeting Linux使用GCC 11或者以上版本, Qt6.8进行编译 
 
 # 编译生成和运行
 

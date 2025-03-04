@@ -124,3 +124,8 @@ FRTC_SDK_API void frtc_cancel_log_upload(unsigned long traction_id)
 {
 	FrtcCall::sharedCallClient()->CancelLogUpload(traction_id);
 }
+
+FRTC_SDK_API void frtc_set_system_info(const char *device_model,const char *os_version)
+{
+    FrtcCall::sharedCallClient()->set_system_info(device_model, os_version);
+}

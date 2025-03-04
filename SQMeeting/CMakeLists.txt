@@ -1,4 +1,3 @@
-
 if (APPLE)
     message("=== === === [macOS] : set cmake_minimum_required(VERSION 3.5) on macOS === === ===")
     cmake_minimum_required(VERSION 3.5)
@@ -79,11 +78,11 @@ endif()
 
 if (APPLE)
     message("=== === === [macOS] : set CMAKE_PREFIX_PATH on macOS === === ===")
-    set(CMAKE_PREFIX_PATH "/usr/local/Qt-6.6.1")
+    set(CMAKE_PREFIX_PATH "/usr/local/Qt-6.8.1")
 elseif (UNIX)
     message("=== === === [UOS] : set CMAKE_PREFIX_PATH on UOS === === ===")
     #set(CMAKE_PREFIX_PATH "/opt/qt6")
-    set(CMAKE_PREFIX_PATH "/usr/local/Qt-6.6.1")
+    set(CMAKE_PREFIX_PATH "/usr/local/Qt-6.8.1")
     set(QML_IMPORT_PATH "${CMAKE_PREFIX_PATH}/qml" FORCE)
     #set(Qt6QML_DIR "${CMAKE_PREFIX_PATH}/qml" FORCE)
     message("+++++++++++++++++++ [UOS] : QML dir is ${Qt6QML_DIR} === === ===")
@@ -106,7 +105,7 @@ message("+++--- Qt6QML_DIR is ${Qt6QML_DIR}, Qt tool chain file is ${CMAKE_TOOLC
 find_package(Qt6 COMPONENTS Core Quick Qml LinguistTools Multimedia MultimediaWidgets QuickControls2 REQUIRED)
 
 #for camera
-find_package(QT NAMES Qt6 COMPONENTS Widgets Multimedia MultimediaWidgets REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS QuickControls2 Widgets Multimedia MultimediaWidgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Multimedia MultimediaWidgets REQUIRED)
 
 
@@ -583,6 +582,7 @@ if(APPLE)
       Qt6::Quick
       Qt6::Network
       Qt6::Multimedia
+      Qt::QuickControls2
       Qt${QT_VERSION_MAJOR}::MultimediaWidgets
       ${Qt6Quick_LIBRARIES} #for QQuickImageProvider
       ${Qt6Multimedia_LIBRARIES} #for QAudioDeviceInfo
@@ -603,6 +603,7 @@ elseif(UNIX) # (UOS)
       Qt6::Network
       Qt6::Multimedia
       Qt6::MultimediaWidgets
+      Qt::QuickControls2
       ${Qt6Quick_LIBRARIES} #for QQuickImageProvider
       ${Qt6Multimedia_LIBRARIES} #for QAudioDeviceInfo      
 

@@ -355,7 +355,9 @@ void FMeetingViewController::remoteLayoutChanged(MeetingLayout::SDKLayoutInfo * 
     if (isContent && !m_sendingContent) {
         // 1.[remote content]: buffer is remote content layout changed, and local not sharing content.
         // so, we will show the contentView, and set the Mode to : 1x5 (changeLayout2Tranditional() ).
+        //printf("\n***********The content is receiveing now*************\n");
         if (false == this->m_content) {
+            //printf("\n***********false == this->m_content*************\n");
             emit cppSendMsgToQMLRemoteContentVideoViewSetHidden(false);
         }
 
@@ -365,6 +367,7 @@ void FMeetingViewController::remoteLayoutChanged(MeetingLayout::SDKLayoutInfo * 
                 
         //1.3.if current view is not include content view, then set m_content = true, and post Msg: FMeetingContentStateChangedNotification.
         if (false == this->m_content) {
+            //printf("\n***********false == this->m_content and set it is true*************\n");
             this->m_content = true;
         }
         
@@ -395,7 +398,7 @@ void FMeetingViewController::remoteLayoutChanged(MeetingLayout::SDKLayoutInfo * 
     this->m_cellCustomUUID = buffer->cellCustomUUID.c_str();
     
     
-    QString qStrCellCustomUUID = QString::fromStdString(m_cellCustomUUID);
+    //QString qStrCellCustomUUID = QString::fromStdString(m_cellCustomUUID);
 
     QList<SVCVideoInfo *> *svcLayoutInfo = new QList<SVCVideoInfo *>;
 
@@ -405,6 +408,7 @@ void FMeetingViewController::remoteLayoutChanged(MeetingLayout::SDKLayoutInfo * 
         SVCVideoInfo *videoInfo = new SVCVideoInfo(); //C_R_
         
         if (valueItem->dataSourceID.rfind("VCR-", 0) != std::string::npos) {
+            printf("\nThe valueItem->dataSourceID is %s\n", valueItem->dataSourceID.c_str());
             videoInfo->eVideoType        = VIDEO_TYPE_CONTENT;
             videoInfo->dataSourceID      = valueItem->dataSourceID;
             videoInfo->strDisplayName    = valueItem->strDisplayName;

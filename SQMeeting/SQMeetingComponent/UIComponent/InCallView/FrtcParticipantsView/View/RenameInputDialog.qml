@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.14
 import QtQuick.Window 2.12
+import QtQuick.Controls.Basic 2.14
 
 import com.frtc.FrtcApiManager 1.0
 import com.frtc.FMeetingWindowControllerObject 1.0 //class FMeetingWindowController.cpp
@@ -24,7 +25,7 @@ Window {
         nameInput.text = rowData
         visible = true;
         renameInputDialog.client_id = client_id
-        renameInputDialog.authority = authiority;
+        renameInputDialog.authority = authority;
     }
 
     Column {
@@ -33,7 +34,7 @@ Window {
         anchors.topMargin: 20
 
         Text {
-            id:changeText
+            id: changeText
             text: "改名"
             font.pixelSize: 16
             anchors.horizontalCenter: parent.horizontalCenter
@@ -48,13 +49,13 @@ Window {
             anchors.top: changeText.bottom
             anchors.topMargin: 13
 
-            text:rowData
+            text: rowData
 
             background: Rectangle {
                 implicitWidth: 200
                 implicitHeight: 40
-                border.width:1
-                color: control.palette.base
+                border.width: 1
+                color: "#FFFFFF"
                 border.color: "#CCCCCC"
             }
 
@@ -62,7 +63,7 @@ Window {
         }
 
         Rectangle {
-            id:line
+            id: line
             width: renameInputDialog.width
             height: 1
             color: "#DEDEDE"
@@ -88,65 +89,55 @@ Window {
             anchors.topMargin: 0
 
             Button {
-                text: "取消"
-                font.pixelSize: 14
-                font.bold: true
-
+                id: cancelButton
                 width: 120
                 height: 48
-
+                
                 background: Rectangle {
-                    color: "transparent"
-                    border.color: "transparent" // 没有边框
+                    color: cancelButton.pressed ? "#f0f0f0" : "transparent"
+                    radius: 4
                 }
 
-                contentItem: Item {
-                    anchors.fill: parent // 填满整个按钮区域
-                    Text {
-                        text: "取消"
-                        color: "#666666"
-                        font.pixelSize: 14
-                        font.bold: true
-                        anchors.centerIn: parent // 确保文本在按钮内居中
-                    }
+                contentItem: Text {
+                    text: "取消"
+                    color: "#666666"
+                    font.pixelSize: 14
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                 }
-                onClicked:{
+
+                onClicked: {
                     renameInputDialog.close();
                 }
             }
 
             Button {
-                text: "确定"
-                font.pixelSize: 14
-                font.bold: true
-
                 width: 120
                 height: 48
 
                 background: Rectangle {
                     color: "transparent"
-                    border.color: "transparent" // 没有边框
                 }
 
-                contentItem: Item {
-                    anchors.fill: parent // 填满整个按钮区域
-                    Text {
-                        text: "确定"
-                        color: "#026FFE"
-                        font.pixelSize: 14
-                        font.bold: true
-                        anchors.centerIn: parent // 确保文本在按钮内居中
-                    }
+                contentItem: Text {
+                    text: "确定"
+                    color: "#026FFE"
+                    font.pixelSize: 14
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                 }
+
                 onClicked: {
                     console.log("新名字: " + nameInput.text);
                     if(authority) {
                         var userToken = SDKUserDefaultObject.getUserToken()
-                        FrtcApiManager.login_change_name(userToken, FMeetingWindowControllerObject.onQmlGetMeetingNumber(),nameInput.text, client_id)
+                        FrtcApiManager.login_change_name(userToken, FMeetingWindowControllerObject.onQmlGetMeetingNumber(), nameInput.text, client_id)
                     } else {
-                        FrtcApiManager.change_name(FMeetingWindowControllerObject.onQmlGetMeetingNumber(),nameInput.text)
+                        FrtcApiManager.change_name(FMeetingWindowControllerObject.onQmlGetMeetingNumber(), nameInput.text)
                     }
-                    renameInputDialog.close(); // 执行保存操作后关闭窗口
+                    renameInputDialog.close();
                 }
             }
         }

@@ -121,6 +121,7 @@ Window {
 
     property bool isShowLeaveMeetingDialog : false;
     property bool isLeaveMeeting : false;
+    property bool isAuthiority: false
 
     //property var dictionary:{}
     property var dictionary: ({})
@@ -132,6 +133,8 @@ Window {
     function setUserConfig(authiority, meetingOwner, audioMute, videoMute) {
         authiority = authiority
         meetingOwner = meetingOwner
+
+        isAuthiority = authiority | meetingOwner
 
         currentMicMute = audioMute
         currentCameraMute = videoMute
@@ -370,7 +373,6 @@ Window {
     }
 
     function muteLocalVideo() {
-        console.log('**************shabi*****************8')
         rectangle_tab_bar.setCameraMute(!currentCameraMute)
 
     }
@@ -498,18 +500,29 @@ Window {
                      "lectureUUID":lectureUUID,
                      "pinUUID":pin_speaker_uuid
                  }
-                var newQmlObject = component.createObject(root, subParams) //parent: here is root.
+                var newQmlObject = component.createObject(root, subParams)
+                
+                // 添加关闭信号处理
+                // newQmlObject.dialogClosed.connect(function() {
+                //     console.log("Dialog is closing, cleaning up...")
+                //     if (participant_dialog) {
+                //         participant_dialog = null
+                //     }
+                // })
+                
                 participant_dialog = newQmlObject
             }
         }
 
-        participant_dialog.conferenceName = root.conferenceName
-        participant_dialog.meetingID = root.meetingID
-        participant_dialog.ownerName = root.ownerName
-        participant_dialog.meetingPasscode = root.meetingPasscode
-        participant_dialog.onMuteSelfCallback      = muteByParticipantDialog
+        if (participant_dialog) {
+            participant_dialog.conferenceName = root.conferenceName
+            participant_dialog.meetingID = root.meetingID
+            participant_dialog.ownerName = root.ownerName
+            participant_dialog.meetingPasscode = root.meetingPasscode
+            participant_dialog.onMuteSelfCallback = muteByParticipantDialog
 
-        participant_dialog.show();
+            participant_dialog.show()
+        }
     }
 
     function showSettingDialog() {
@@ -537,7 +550,7 @@ Window {
 
     function showAskLeaveMeetingDialog() {
         if (undefined === ask_leave_meeting_dialog) {
-            ask_leave_meeting_dialog = Qt.createQmlObject('FrtcDropCallWindow {authority:root.authiority}', root)
+            ask_leave_meeting_dialog = Qt.createQmlObject('FrtcDropCallWindow {authority:root.isAuthiority}', root)
             if (undefined !== ask_leave_meeting_dialog) {
                 ask_leave_meeting_dialog.onStopButtonClickedCallback = showStopMeetingDialog
                 ask_leave_meeting_dialog.qmlUserDropCallButtonSignal.connect(root.qmlUserLeaveMeetingSignal)
@@ -943,14 +956,11 @@ Window {
         }
     }
 
-    function handleWaterMaskCallBack(liveMeetingUrl,
-                                     livePassword,
-                                     liveStatus,
-                                     recordingStatus) {
-        streaming_live_url = liveMeetingUrl
-        streaming_live_password = livePassword
+    function handleWaterMaskCallBack(live_meeting_url, live_password, live_status, recording_status) {
+        streaming_live_url = live_meeting_url
+        streaming_live_password = live_password
 
-        if(!isRecording && recordingStatus === 'STARTED') {
+        if(!isRecording && recording_status === 'STARTED') {
             recording_success_view.visible = true
             rectangle_tab_bar.handleButtonState(0, false)
             isRecording = true
@@ -963,7 +973,7 @@ Window {
 
             recordingReminderView.visible = true
 
-        } else if(isRecording && recordingStatus === 'NOT_STARTED') {
+        } else if(isRecording && recording_status === 'NOT_STARTED') {
             recording_success_view.visible = false
             rectangle_tab_bar.handleButtonState(0, false)
             isRecording = false
@@ -977,7 +987,7 @@ Window {
             recordingReminderView.visible = false
         }
 
-        if(!isStreaming && liveStatus === 'STARTED') {
+        if(!isStreaming && live_status === 'STARTED') {
             rectangle_tab_bar.handleButtonState(1, false)
             isStreaming = true
 
@@ -989,7 +999,7 @@ Window {
             }
 
             streamingReminderView.visible = true
-        } else if(isStreaming && liveStatus === 'NOT_STARTED') {
+        } else if(isStreaming && live_status === 'NOT_STARTED') {
             rectangle_tab_bar.handleButtonState(1, false)
             isStreaming = false
 

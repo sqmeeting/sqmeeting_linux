@@ -237,6 +237,9 @@ public:
 	const char* GetUploadStatusImpl(uint64_t traction_id);
 	void CancelLogUpload(uint16_t traction_id);
 
+    void set_system_info(const std::string &device_model,
+                        const std::string &os_version);
+
 public:
 	//for share content.
 	void startShareScreen();

@@ -1,7 +1,5 @@
 #include "common_interface.h"
 #include "sq_log.h"
-#include "sq_util.h"
-#include <iostream>
 
 #ifndef WIN32
 #include <unistd.h>
@@ -193,6 +191,13 @@ void CommonInterface::CancelUploadLogs(uint64_t traction_id)
 {
     _rtc_interface->CancelUploadLogs(traction_id);
 }
+
+void CommonInterface::SetSystemInfo(const std::string &deviceModel,
+                                    const std::string &osVersion)
+{
+    _rtc_interface->SetSystemInfo(deviceModel, osVersion);
+}
+
 
 int CommonInterface::GetCPULevel()
 {

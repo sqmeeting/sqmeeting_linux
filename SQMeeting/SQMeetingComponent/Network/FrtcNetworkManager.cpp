@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "FrtcUUID.h"
 
-#define UserAgent "FrtcMeeting/3.4.0 linux"
+#define UserAgent "FrtcMeeting/3.4.1 linux"
 
 FrtcNetworkManager* FrtcNetworkManager::s_instance = nullptr;
 
@@ -134,6 +134,14 @@ void FrtcNetworkManager::onReplyFinished() {
         QJsonObject jsonObj;
         QString requestId = reply->property("requestId").toString();
 
+        // 初始化 JSON 对象以存储响应数据
+       // QJsonObject jsonObj;
+
+        // 获取原始响应数据
+        // QByteArray data = reply->readAll();
+        // qDebug() << "Raw Response Data = " << data;  // 打印原始响应数据
+        // QString rawResponseData = QString(data);
+
         if (reply->error() == QNetworkReply::NoError) {
             QByteArray data = reply->readAll();
             QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
@@ -145,7 +153,11 @@ void FrtcNetworkManager::onReplyFinished() {
             }
         } else {
             qDebug() << "Network error:" << reply->errorString();
+            QByteArray data = reply->readAll();
+            qDebug() << "Raw Response Data = " << data;  // 打印原始响应数据
+            QString rawResponseData = QString(data);
             jsonObj["error"] = reply->errorString();
+            jsonObj["rawResponseData"] = rawResponseData;
         }
 
         if (code == 200) {

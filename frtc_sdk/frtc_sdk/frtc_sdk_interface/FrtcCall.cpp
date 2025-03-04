@@ -323,6 +323,12 @@ void FrtcCall::CancelLogUpload(uint16_t traction_id)
 	_sdkContext->CancelUploadLogsImpl(traction_id);
 }
 
+void FrtcCall::set_system_info(const std::string &device_model,
+                                const std::string &os_version)
+{
+    _sdkContext->SetSystemInfoImpl(device_model, os_version);
+}
+
 
 void FrtcCall::onSVCLayoutChanged(const SDKLayoutInfo& layoutInfo)
 {

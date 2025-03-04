@@ -363,10 +363,10 @@ void FrtcApiManager::onRequestFinished(bool success, int code, const QJsonObject
     qDebug() << "requestId:" << requestId;
     //emit apiRequestCompleted(success,code,json,requestId);
 
-    if (code == 401) {
-        emit signExpiredCompleted();
-        return;
-    }
+    // if (code == 401) {
+    //     emit signExpiredCompleted();
+    //     return;
+    // }
 
     if (requestId == "frtc_sign_in") {
         emit signInRequestCompleted(success,json);

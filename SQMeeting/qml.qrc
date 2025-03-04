@@ -159,7 +159,7 @@
         <file>Images/InCall/FMeetingVC/TabBar/in_conference_tabbar_local_preview_unselected@2x.png</file>
         <file>Images/InCall/FMeetingVC/TabBar/in_conference_tabbar_security.png</file>
         <file>Images/InCall/FMeetingVC/TabBar/in_conference_tabbar_security@2x.png</file>
-	<file>Images/InCall/FMeetingVC/TabBar/icon_reminder.png</file>
+        <file>Images/InCall/FMeetingVC/TabBar/icon_reminder.png</file>
         <file>Images/InCall/FMeetingVC/TabBar/icon_reminder@2x.png</file>
         <file>Images/frtc_sdk_bundle_images/bg-camera-off.png</file>
         <file>Images/frtc_sdk_bundle_images/bg-camera-off@2x.png</file>
@@ -225,9 +225,9 @@
         <file>Images/InCall/FMeetingVC/ParticipantView/mute/status-mute.png</file>
         <file>Images/InCall/FMeetingVC/ParticipantView/mute/status-mute@2x.png</file>
         <file>Images/InCall/FMeetingVC/ParticipantView/mute/status-mute@3x.png</file>
-	<file>Images/InCall/FMeetingVC/ParticipantView/mute/icon_status_pin.png</file>
+        <file>Images/InCall/FMeetingVC/ParticipantView/mute/icon_status_pin.png</file>
         <file>Images/InCall/FMeetingVC/ParticipantView/mute/icon_status_pin@2x.png</file>
-	<file>Images/InCall/FMeetingVC/ParticipantView/mute/icon-status-in_call_pin@3x.png</file>
+        <file>Images/InCall/FMeetingVC/ParticipantView/mute/icon-status-in_call_pin@3x.png</file>
         <file>Images/InCall/FMeetingVC/ParticipantView/mute/icon-status-in_call_pin@2x.png</file>
         <file>Images/InCall/FMeetingVC/MettingInfo/icon-down-arrow.png</file>
         <file>Images/InCall/FMeetingVC/MettingInfo/icon-down-arrow@2x.png</file>

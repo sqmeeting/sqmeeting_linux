@@ -133,8 +133,34 @@ Rectangle {
                 SDKUserDefaultObject.onQmlSaveLoginState(true)
                 FrtcTool.refreshMainWindow(true)
                 homeView.onLoginSuccess()
-            }else {
-                toastView.showText(qsTr("登录失败,请检查用户名和密码"))
+            } else {
+                if (json.rawResponseData) {
+                    try {
+                        // 解析 rawResponseData 字符串为 JSON 对象
+                        var rawResponseJson = JSON.parse(json.rawResponseData);
+
+                        // 检查是否包含 errorCode
+                        if (rawResponseJson.errorCode) {
+                            var errorCode = rawResponseJson.errorCode;
+                            console.log("Parsed errorCode:", errorCode);
+
+                            // 根据 errorCode 执行相应操作
+                            if (errorCode === "0x00003000") {
+                                toastView.showText(qsTr("登录失败,请检查用户名和密码"));
+                            } else if(errorCode === '0x00003001'){
+                                toastView.showText(qsTr("多次输入错误账号被锁定，请五分钟后重试"));
+                            } else if(errorCode === "0x00003002") {
+                                toastView.showText(qsTr('账户已被锁定,请联系管理员解锁'));
+                            } else if(errorCode === "0x00003003") {
+                                toastView.showText(qsTr("登录失败,请检查用户名和密码"));
+                            }
+                        }
+                    } catch (e) {
+                        console.error("Failed to parse rawResponseData:", e);
+                    }
+                } else {
+                    toastView.showText(qsTr("登录失败,请检查用户名和密码"));
+                }
             }
         }
     }

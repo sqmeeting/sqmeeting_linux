@@ -4,7 +4,6 @@
 #include "rtc_interface.h"
 #include "rtc_definitions.h"
 #include "rtc_callback_interface.h"
-#include "rtc_log.h"
 
 class ICommonInterfaceCallback
 {
@@ -171,6 +170,9 @@ public:
     std::string GetUploadStatus(uint64_t traction_id);
     
     void CancelUploadLogs(uint64_t traction_id);
+
+    void SetSystemInfo(const std::string &deviceModel,
+                        const std::string &osVersion);
     
     int GetCPULevel();
     

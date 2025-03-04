@@ -128,7 +128,7 @@ Rectangle{
     function createRemotePeopleVideoViewList(windowId) {
         var component = Qt.createComponent("VideoRenderView.qml");
         if (component.status === Component.Ready) {
-            var newVideoView = component.createObject(svc_layout_view, {text:windowId + 1}); //parent: svc_layout_view.
+            var newVideoView = component.createObject(svc_layout_view,  {strDisplayName: (windowId + 1).toString()}); //parent: svc_layout_view.
 
             newVideoView.x = 0 //col * 150 + 70
             newVideoView.y = 0 //row * 120 + 70
@@ -155,7 +155,7 @@ Rectangle{
     function createLocalPeopleVideoView(windowId) {
         var component = Qt.createComponent("LocalVideoRenderView.qml");
         if (component.status === Component.Ready) {
-            var newVideoView = component.createObject(svc_layout_view, {text:windowId + 1}); //parent: svc_layout_view.
+            var newVideoView = component.createObject(svc_layout_view,  {strDisplayName: (windowId + 1).toString()}); //parent: svc_layout_view.
 
             newVideoView.x = 0 //col * 150 + 70
             newVideoView.y = disPlayHeight / 12
@@ -183,7 +183,7 @@ Rectangle{
     function createRemoteContentVideoView(windowId) {
         var component = Qt.createComponent("VideoRenderView.qml");
         if (component.status === Component.Ready) {
-            var newVideoView = component.createObject(svc_layout_view, {text:windowId + 1}); //parent: svc_layout_view.
+            var newVideoView = component.createObject(svc_layout_view,  {strDisplayName: (windowId + 1).toString()}); //parent: svc_layout_view.
 
             newVideoView.x = 0
             newVideoView.y = disPlayHeight / 12
@@ -297,7 +297,7 @@ Rectangle{
                 videoRenderView.clearRenderSourceID()
             } else {
                 videoRenderView.showVideoview(true)
-                videoRenderView.renderMuteImage(false)
+                //videoRenderView.renderMuteImage(false)
             }
         }
     }
@@ -328,6 +328,7 @@ Rectangle{
     }
 
     function dealwithRecvMsgRefreshLayoutMode(aMode, aDetail) {
+        console.log('*********dealwith recv mesg refresh layout moed*********')
         mode = aMode;
         var detail = aDetail;
         var strRowArray = aDetail.videoViewDescription; //rowCount of the array (detail.videoViewDescription)
@@ -344,17 +345,20 @@ Rectangle{
     }
     
     function dealwithRecvMsgLayoutRemoteView(arg1, arg2) {
+        console.log('dealwithRecvMsgLayoutRemoteView(arg1, arg2)')
         getTraditionalLayout()
         var videoMode = arg1;
         var detail = arg2;
         var viewArray = detail.viewArray; //layoutInfo
 
+        console.log('The viewArray;s length is: ' + viewArray.length)
         for (var i = 0; i < viewArray.length; ++i) {
             var remoteMVV = null;
             var videoInfo = viewArray[i];
 
             //0:VIDEO_TYPE_LOCAL; 1:VIDEO_TYPE_REMOTE; 2:VIDEO_TYPE_CONTENT; 3:VIDEO_TYPE_INVALID.
             if (videoInfo.eVideoType === 1) { //VIDEO_TYPE_REMOTE
+                console.log('video_type_remote')
                 remoteMVV = getVideoViewControllerByViewId(videoInfo.dataSourceID);
                 remoteMVV.setDisplayName(videoInfo.strDisplayName)
                 remoteMVV.uuid = videoInfo.strUUID
@@ -364,7 +368,7 @@ Rectangle{
 
                 for (var j = 0; j < m_remotePeopleDataSourceID.length; ++j) {
                     var sourceID = m_remotePeopleDataSourceID[j];
-                    ////console.log("[SVCLayout.qml][dealwithRecvMsgLayoutRemoteView]: m_remotePeopleDataSourceID [", j, "] sourceID: ", sourceID);
+                    console.log("[SVCLayout.qml][dealwithRecvMsgLayoutRemoteView]: m_remotePeopleDataSourceID [", j, "] sourceID: ", sourceID);
                     if (null !== sourceID && undefined !== sourceID
                         && null !== videoInfo.dataSourceID && undefined !== videoInfo.dataSourceID
                         && sourceID === videoInfo.dataSourceID) {
@@ -413,11 +417,16 @@ Rectangle{
                     y       = rowArray[1] * root.disPlayHeight;
                     width   = rowArray[2] * root.disPlayWidth;
                     height  = rowArray[3] * root.disPlayHeight;
+                    console.log('The x is ' + x)
+                    console.log('The y is ' + y)
+                    console.log('The width is ' + width)
+                    console.log('The height is ' + height)
                  }
             }
             
 
             if (videoInfo.eVideoType === 0) { //0: VIDEO_TYPE_LOCAL
+                console.log('the video type is local')
                 if (viewArray.length === 1) {
                    if (true === contentLayoutReady) {
                         setLocalVideoRect(0, 0, 320 * screen_ratio, 180 * screen_ratio);
@@ -432,10 +441,12 @@ Rectangle{
                 }
 
             } else if (videoInfo.eVideoType === 2) { //2: VIDEO_TYPE_CONTENT
+                console.log('the video type is content')
                 setContentVideoRect(x, y, width, height);
                 contentVideoView.setDisplayName(videoInfo.strDisplayName)
+                contentVideoView.setUserPin(videoInfo.pin)
             } else if (videoInfo.eVideoType === 1) { //1: VIDEO_TYPE_REMOTE
-
+                    console.log('The video type remote')
                     if (i !== 0) {
                         if (true === isFullScreen) {
 
@@ -448,6 +459,7 @@ Rectangle{
                         remoteMVV.setDisplayName(videoInfo.strDisplayName);
       
                         remoteMVV.setRenderSourceID(videoInfo.dataSourceID);
+                        remoteMVV.setUserPin(videoInfo.pin)
                         remoteMVV.stopRendering();
                         
                         setRemoteMVVVideoViewRect(remoteMVV, x, y, width, height);
@@ -457,7 +469,7 @@ Rectangle{
                     }
             }
 
-            remoteMVV.setUserPin(videoInfo.pin)
+            // remoteMVV.setUserPin(videoInfo.pin)
 
             // [macOS code]: == -2;
             // [on UOS / macOS]: actually, server data is resolution_width : -1.
@@ -540,6 +552,7 @@ Rectangle{
             if (null !== videoRenderView.dataSourceID && undefined !== videoRenderView.dataSourceID
                 && null !== dataSourceID && undefined !== dataSourceID
                 && videoRenderView.dataSourceID === dataSourceID) {
+                console.log('it is not null')
                 return videoRenderView;
             }
         }
@@ -547,10 +560,12 @@ Rectangle{
         for (var index = 0; index < m_remotePeopleVideoViewList.length; ++index) {
             videoRenderView = m_remotePeopleVideoViewList[index];
             if (false === videoRenderView.isShow) {
-                 videoRenderView.setRenderSourceID(dataSourceID);
+                videoRenderView.setRenderSourceID(dataSourceID);
+                console.log('it is not null too')
                 return videoRenderView;
             }
         }
+        console.log('It is a null video view')
         return null;
     }
     

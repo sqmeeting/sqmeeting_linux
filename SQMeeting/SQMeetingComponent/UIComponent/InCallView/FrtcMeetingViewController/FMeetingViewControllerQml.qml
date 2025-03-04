@@ -1,12 +1,3 @@
-//
-//  FMeetingViewControllerQML.qml
-//  class FMeetingViewControllerQML.
-//  frtc_sdk Qt version.
-//
-//  Created by Yingyong.Mao on 2023/12/03.
-//  Copyright © 2022 毛英勇. All rights reserved.
-//
-
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
@@ -119,12 +110,12 @@ Rectangle {
     }
 
     function dealwithRecvMsgRemoteViewHiddenOrNot(value) {
-        //console.log("[FMeetingViewControllerQML.qml][dealwithRecvMsgRemoteViewHiddenOrNot]: value: " + value);
+        console.debug("[FMeetingViewControllerQML.qml][dealwithRecvMsgRemoteViewHiddenOrNot]: value: " + value);
         remote_video_svclayout_views.dealwithRecvMsgRemoteViewHiddenOrNot(value)
     }
 
     function dealwithRecvMsgRefreshLayoutMode(mode, value) {
-        //console.log("[FMeetingViewControllerQML.qml][dealwithRecvMsgRefreshLayoutMode]: mode: " + mode + ", value: " + value);
+        console.log("[FMeetingViewControllerQML.qml][dealwithRecvMsgRefreshLayoutMode]: mode: " + mode + ", value: " + value);
         remote_video_svclayout_views.dealwithRecvMsgRefreshLayoutMode(mode, value)
     }
 
@@ -168,64 +159,54 @@ Rectangle {
     //------------------------------------------------
 
     Connections {
-        target: FMeetingViewControllerObject;
+        target: FMeetingViewControllerObject
 
-        onCppSendMsgToQMLPrepareSVCLayout: {
+        function onCppSendMsgToQMLPrepareSVCLayout(mode, value) {
             dealwithRecvMsgPrepareSVCLayout(mode, value)
         }
 
-        onCppSendMsgToQMLRemoteViewHiddenOrNot: {
+        function onCppSendMsgToQMLRemoteViewHiddenOrNot(value) {
             dealwithRecvMsgRemoteViewHiddenOrNot(value)
         }
 
-        onCppSendMsgToQMLRefreshLayoutMode: {
-            var videoViewNum = value.videoViewNum;
-            var isSymmetical = value.isSymmetical;
-            var strRowArray = value.videoViewDescription;
-
-
-
-            //Test ---------- show data ---------- ---------- ----------
-                           var viewArray = value.viewArray;
+        function onCppSendMsgToQMLRefreshLayoutMode(mode, value) {
+            var videoViewNum = value.videoViewNum
+            var isSymmetical = value.isSymmetical
+            var strRowArray = value.videoViewDescription
+            var viewArray = value.viewArray
             dealwithRecvMsgRefreshLayoutMode(mode, value)
         }
 
-
-        onCppSendMsgToQMLLayoutRemoteView: {
+        function onCppSendMsgToQMLLayoutRemoteView(mode, value) {
             dealwithRecvMsgLayoutRemoteView(mode, value)
         }
 
-        //[FMeetingViewController.cpp]: cppSendMsgToQMLRemoteVideoReceived.
-        onCppSendMsgToQMLRemoteVideoReceived: {
-            dealwithRecvMsgRemoteVideoReceived(datasourceid);
+        function onCppSendMsgToQMLRemoteVideoReceived(datasourceid) {
+            dealwithRecvMsgRemoteVideoReceived(datasourceid)
         }
 
-        //for remote content.
-
-        onCppSendMsgToQMLRemoteContentVideoViewSetHidden: {
-           dealwithRecvMsgRemoteContentVideoViewSetHidden(hidden);
+        function onCppSendMsgToQMLRemoteContentVideoViewSetHidden(hidden) {
+           dealwithRecvMsgRemoteContentVideoViewSetHidden(hidden)
         }
 
-        onCppSendMsgToQMLRemoteContentVideoViewStartRendering: {
-            dealwithRecvMsgRemoteContentVideoViewStartRendering();
+        function onCppSendMsgToQMLRemoteContentVideoViewStartRendering() {
+            dealwithRecvMsgRemoteContentVideoViewStartRendering()
         }
 
-        onCppSendMsgToQMLRemoteContentVideoViewStopRendering: {
-            rectangle_main_view.dealwithRecvMsgRemoteContentVideoViewStopRendering();
+        function onCppSendMsgToQMLRemoteContentVideoViewStopRendering() {
+            rectangle_main_view.dealwithRecvMsgRemoteContentVideoViewStopRendering()
         }
 
-        onCppSendMsgToQMLSetLocalPreviewEnable: {
-            //setLocalPreviewEnable(aEnable);
+        function onCppSendMsgToQMLSetLocalPreviewEnable(aEnable) {
+            //setLocalPreviewEnable(aEnable)
         }
 
-
-        onCppSendMsgToQMLContentStateChangedCallBack: {
-            dealwithContentStateChangedCallBack(isSending);
+        function onCppSendMsgToQMLContentStateChangedCallBack(isSending) {
+            dealwithContentStateChangedCallBack(isSending)
         }
 
-        onCppSendMsgToQMLUpdateRosterList: {
-          remote_video_svclayout_views.dealwithUpdateRosterList(rosterListObject);
-
+        function onCppSendMsgToQMLUpdateRosterList(rosterListObject) {
+            remote_video_svclayout_views.dealwithUpdateRosterList(rosterListObject)
         }
     }
 

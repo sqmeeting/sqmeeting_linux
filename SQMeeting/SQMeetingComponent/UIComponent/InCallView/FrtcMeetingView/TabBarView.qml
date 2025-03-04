@@ -39,14 +39,12 @@ Rectangle {
     }
 
     Connections {
-        target: FrtcParticipantsViewControllerObject; //created by FrtcCall::init().
+        target: FrtcParticipantsViewControllerObject //created by FrtcCall::init().
 
-        // [FrtcParticipantsViewController.cpp]: updateRosterNumber(int participantsNum)
-        // -> emit cppSendMsgToQMLUpdateRosterNumber(participantsNum)
-        onCppSendMsgToQMLUpdateRosterNumber: {
-           setRosterNumber(rosterNumber)
+        // 使用新的语法
+        function onCppSendMsgToQMLUpdateRosterNumber(rosterNumber) {
+            setRosterNumber(rosterNumber)
         }
-
     }
 
     Component.onCompleted: {

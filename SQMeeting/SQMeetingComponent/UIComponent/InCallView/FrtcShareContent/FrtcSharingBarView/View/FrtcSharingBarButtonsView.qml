@@ -132,7 +132,7 @@ Rectangle {
     function handleStopStreamingSuccess() {
         tabbar_streaming_button.state = "UNSELECTED"; // 更新按钮状态
         isButtonEnabled = true; // 解锁按钮
-        tabbar_recording_button.isSelected = false
+        tabbar_streaming_button.isSelected = false
     }
 
     function handleWaterMaskCallBack(live_meeting_url,

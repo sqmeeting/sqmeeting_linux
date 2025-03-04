@@ -584,7 +584,7 @@ void SVCLayoutManager::prepareSVC3x3LayoutDetail() {
 //[1x5]: 1.remote: sharing content; 2.lecture mode.
 void SVCLayoutManager::prepareSVCLayoutDetail() {
     
-    for (SVCLayoutModeType mode = SVC_LAYOUT_MODE_1X1; mode < SVC_LAYOUT_MODE_NUMBER; ) {
+    for (SVCLayoutModeType mode = SVC_LAYOUT_MODE_1X1; mode < SVC_LAYOUT_MODE_NUMBER;) {
         switch (mode) {
             case SVC_LAYOUT_MODE_1X1:
                 gSvcLayoutDetail[mode] = (SVCLayoutDetail) {1, true,
@@ -758,31 +758,32 @@ void SVCLayoutManager::clearRemoteUserInfo() {
     m_svcVideoList->clear();
 }
 
-void SVCLayoutManager::showSVCVideoInfoArray(QString strMsg, QList<SVCVideoInfo *> *videoLayoutInfo) {
-    qDebug("--[%s][%d]: --- --- --- %s:", Q_FUNC_INFO, __LINE__, qPrintable(strMsg));
-    qDebug("--[%s][%d]: --- --- --- QList of SVCVideoInfo size: %d", Q_FUNC_INFO, __LINE__, videoLayoutInfo->size());
+void SVCLayoutManager::showSVCVideoInfoArray(QList<SVCVideoInfo *> *videoLayoutInfo) {
+    printf("\n--[%s][%d]: --- --- --- QList of SVCVideoInfo size: %d\n", Q_FUNC_INFO, __LINE__, videoLayoutInfo->size());
 
     int i = 0;
     for (QList<SVCVideoInfo *>::iterator iter = videoLayoutInfo->begin(); iter != videoLayoutInfo->end(); ++iter) {
         SVCVideoInfo *item = (SVCVideoInfo *)*iter;
-        QString qStrDisplayName = QString::fromLocal8Bit(item->strDisplayName.c_str());
-        QString qStrDataSourceID = QString::fromStdString(item->dataSourceID);
-        QString qStrUUID = QString::fromStdString(item->strUUID);
-        qDebug("--[%s][%d]: ------------------------- [%d] -----------------------", Q_FUNC_INFO, __LINE__, i++);
-        qDebug("--[%s][%d]: | uuid: %s", Q_FUNC_INFO, __LINE__, qPrintable(qStrUUID));
-        qDebug("--[%s][%d]: | strDisplayName: %s", Q_FUNC_INFO, __LINE__,  qPrintable(qStrDisplayName));
-        qDebug("--[%s][%d]: | eVideoType: %d", Q_FUNC_INFO, __LINE__, item->eVideoType);
-        qDebug("--[%s][%d]: | dataSourceID: %s", Q_FUNC_INFO, __LINE__, qPrintable(qStrDataSourceID));
-        qDebug("--[%s][%d]: | resolution_width: %d, resolution_height: %d.", Q_FUNC_INFO, __LINE__, item->resolution_width, item->resolution_height);
-        qDebug("--[%s][%d]: | removed: %s", Q_FUNC_INFO, __LINE__, (item->removed)? "true" : "false");
-        qDebug("--[%s][%d]: | active: %s", Q_FUNC_INFO, __LINE__, (item->active)? "true" : "false");
-        qDebug("--[%s][%d]: | maxResolution: %s", Q_FUNC_INFO, __LINE__, (item->maxResolution)? "true" : "false");
-        qDebug("--[%s][%d]: | pin: %s", Q_FUNC_INFO, __LINE__, (item->pin)? "true" : "false");
-        qDebug("--[%s][%d]: ------------------------------------------------", Q_FUNC_INFO, __LINE__);
+        // QString qStrDisplayName = QString::fromLocal8Bit(item->strDisplayName.c_str());
+        // QString qStrDataSourceID = QString::fromStdString(item->dataSourceID);
+        // QString qStrUUID = QString::fromStdString(item->strUUID);
+        printf("\n--[%s][%d]: ------------------------- [%d] -----------------------\n", Q_FUNC_INFO, __LINE__, i++);
+        printf("\n--[%s][%d]: | uuid: %s\n", Q_FUNC_INFO, __LINE__, item->strUUID.c_str());
+        printf("\n--[%s][%d]: | strDisplayName: %s\n", Q_FUNC_INFO, __LINE__,  item->strDisplayName.c_str());
+        printf("\n--[%s][%d]: | eVideoType: %d\n", Q_FUNC_INFO, __LINE__, item->eVideoType);
+        printf("\n--[%s][%d]: | dataSourceID: %s\n", Q_FUNC_INFO, __LINE__, item->dataSourceID.c_str());
+        printf("\n--[%s][%d]: | resolution_width: %d, resolution_height: %d.\n", Q_FUNC_INFO, __LINE__, item->resolution_width, item->resolution_height);
+        printf("\n--[%s][%d]: | removed: %s\n", Q_FUNC_INFO, __LINE__, (item->removed)? "true" : "false");
+        printf("\n--[%s][%d]: | active: %s\n", Q_FUNC_INFO, __LINE__, (item->active)? "true" : "false");
+        printf("\n--[%s][%d]: | maxResolution: %s\n", Q_FUNC_INFO, __LINE__, (item->maxResolution)? "true" : "false");
+        printf("\n--[%s][%d]: | pin: %s\n", Q_FUNC_INFO, __LINE__, (item->pin)? "true" : "false");
+        printf("\n--[%s][%d]: ------------------------------------------------\n", Q_FUNC_INFO, __LINE__);
     }
 }
 
 void SVCLayoutManager::svcRefreshLayoutList(QList<SVCVideoInfo *> *videoLayoutInfo) {
+    //printf("\nvoid SVCLayoutManager::svcRefreshLayoutList(QList<SVCVideoInfo *> *videoLayoutInfo)\n");
+    //showSVCVideoInfoArray(videoLayoutInfo);
     std::vector<int> removeArray;
 
     for (int j = this->m_svcVideoList->size() - 1; j >= 0; --j) {
@@ -832,9 +833,9 @@ void SVCLayoutManager::svcRefreshLayoutList(QList<SVCVideoInfo *> *videoLayoutIn
             }
         }
 
-        QString qStrDisplayName     = QString::fromLocal8Bit(videoParam->strDisplayName.c_str());
-        QString qStrDataSourceID    = QString::fromStdString(videoParam->dataSourceID);
-        QString qStrUUID            = QString::fromStdString(videoParam->strUUID);
+        // QString qStrDisplayName     = QString::fromLocal8Bit(videoParam->strDisplayName.c_str());
+        // QString qStrDataSourceID    = QString::fromStdString(videoParam->dataSourceID);
+        // QString qStrUUID            = QString::fromStdString(videoParam->strUUID);
 
         if (!bFind) {
             SVCVideoInfo *newVideoInfo = new SVCVideoInfo();
@@ -864,7 +865,7 @@ void SVCLayoutManager::svcRefreshLayoutList(QList<SVCVideoInfo *> *videoLayoutIn
 	    int removeVideoIndex = (int)removeArray.at(i);
 
         SVCVideoInfo *videoInfo = m_svcVideoList->at(removeVideoIndex);
-        QString qStrDataSourceID = QString::fromStdString(videoInfo->dataSourceID);
+        //QString qStrDataSourceID = QString::fromStdString(videoInfo->dataSourceID);
 
         m_svcVideoList->removeAt((int)removeArray.at(i));
     }
@@ -875,7 +876,7 @@ void SVCLayoutManager::svcRefreshLayoutList(QList<SVCVideoInfo *> *videoLayoutIn
         int removeVideoIndex = (int)removeArray.at(i);
 
         SVCVideoInfo *videoInfo = m_svcVideoList->at(removeVideoIndex);
-        QString qStrDataSourceID = QString::fromStdString(videoInfo->dataSourceID);
+        //QString qStrDataSourceID = QString::fromStdString(videoInfo->dataSourceID);
 
         m_svcVideoList->removeAt((int)removeArray.at(i));
     }
@@ -974,6 +975,8 @@ void SVCLayoutManager::svcRefreshLayoutList(QList<SVCVideoInfo *> *videoLayoutIn
 
 
 void SVCLayoutManager::refreshLayoutMode(SVCLayoutModeType mode, QList<SVCVideoInfo *> * viewArray) {
+    //printf("\nvoid SVCLayoutManager::refreshLayoutMode(SVCLayoutModeType mode, QList<SVCVideoInfo *> * viewArray)\n");
+    //showSVCVideoInfoArray(viewArray);
     SVCLayoutDetail detail = gSvcLayoutDetail[mode];
     QJsonObject Obj;
     Obj.insert("videoViewNum", detail.videoViewNum);

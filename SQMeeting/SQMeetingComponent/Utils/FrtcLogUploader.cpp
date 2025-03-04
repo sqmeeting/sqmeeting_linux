@@ -22,7 +22,7 @@ LogUploader::~LogUploader(){}
 uint64_t LogUploader::startUploadLogFiles(const QString & meta)
 {
     QJsonObject metaObj;
-    metaObj.insert("version", "2.0.0");
+    metaObj.insert("version", "3.4.1");
     metaObj.insert("platform", "linux");/*QSysInfo::prettyProductName().replace(' ', '-')*/
     metaObj.insert("os", QSysInfo::prettyProductName());
     metaObj.insert("device", getDeviceManufacturerInfo());

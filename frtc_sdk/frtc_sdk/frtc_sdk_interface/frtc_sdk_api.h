@@ -89,3 +89,7 @@ return value:
 FRTC_SDK_API unsigned long frtc_upload_log(const char *file_meta, const char * file_name, int file_count);
 FRTC_SDK_API const char* frtc_log_upload_status_query(unsigned long traction_id);
 FRTC_SDK_API void frtc_cancel_log_upload(unsigned long traction_id);
+
+FRTC_SDK_API void frtc_set_system_info(const char *device_model,const char *os_version);
+
+

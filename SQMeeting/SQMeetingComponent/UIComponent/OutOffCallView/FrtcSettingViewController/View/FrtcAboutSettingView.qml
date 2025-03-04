@@ -36,7 +36,7 @@ Item {
             anchors.top: about_image.bottom
             anchors.topMargin: 5
             anchors.horizontalCenter: parent.horizontalCenter
-            text: qsTr("版本: 3.4.0")
+            text: qsTr("版本: 3.4.1")
             clip: true
             font.pixelSize: 14
             color: "#222222"

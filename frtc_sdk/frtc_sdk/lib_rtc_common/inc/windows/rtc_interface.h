@@ -24,6 +24,9 @@ namespace RTC
 
         virtual const std::string &GetVersion() = 0;
 
+        virtual void SetSystemInfo(const std::string &deviceModel,
+                                   const std::string &osVersion) = 0;
+
         virtual void JoinMeetingNoLogin(const std::string &server_address, 
                                         const std::string &meeting_alias,
                                         const std::string &join_name, 

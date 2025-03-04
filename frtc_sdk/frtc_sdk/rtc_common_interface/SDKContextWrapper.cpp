@@ -1,28 +1,11 @@
-//
-//  SDKContextWrapper.cpp
-//  class SDKContext.
-//  frtc_sdk Qt version.
-//
-//  Created by Yingyong.Mao on 2022/06/20.
-//  Copyright © 2022 毛英勇. All rights reserved.
-//
-
-
 #if defined (UOS)
 #elif defined (__APPLE__)
 #elif defined (WIN32)
-//TODO: Qt5 -> Qt6 -yingyong.Mao -2023-10-23
 #include<windows.h>
 #endif
 
 
 #include "SDKContextWrapper.h"
-
-
-#include "FrtcCall.h"
-
-#include <iostream>
-
 SDKContext::SDKContext(const std::string& uuid, const std::string log_path)
 	: _impl(nullptr)
 	, _sdkObserver(nullptr)
@@ -445,4 +428,10 @@ std::string SDKContext::GetUploadStatusImpl(uint64_t traction_id)
 void SDKContext::CancelUploadLogsImpl(uint64_t traction_id)
 {
 	_impl->CancelUploadLogsImpl(traction_id);
+}
+
+void SDKContext::SetSystemInfoImpl(const std::string &deviceModel,
+                       const std::string &osVersion)
+{
+    _impl->SetSystemInfoImpl(deviceModel, osVersion);
 }

@@ -25,9 +25,26 @@
 #include <iostream>
 #include <mutex>
 
+#ifdef Q_OS_LINUX
+static QStringList manufacturerFileList {
+    "/sys/class/dmi/id/chassis_vendor",
+    "/sys/class/dmi/id/product_family",
+    "/sys/class/dmi/id/product_name",
+    "/sys/class/dmi/id/product_sku",
+    "/sys/class/dmi/id/product_version"
+};
+#elif defined(Q_OS_MAC)
+static QStringList manufacturerFileList {
+    "/System/Library/CoreServices/SystemVersion.plist", // Example for Mac
+    // You can add more paths specific to macOS if needed
+};
+#endif
+
 QMutex FMakeCallClient::m_Mutex;
 FMakeCallClient * FMakeCallClient::sharedFRMakeCallClient = nullptr;
 FMakeCallClient* FMakeCallClient::instance = nullptr;
+
+
 
 FMakeCallClient * FMakeCallClient::sharedCallClient()
 {
@@ -68,9 +85,105 @@ void FMakeCallClient::register_sdk(CallBackFunction cb)
     std::string log_path = dir + "frtc_call.log";
 
     std::string app_uuid = FrtcUUID::getApplicationUUID();
-
     frtc_sdk_init(app_uuid.c_str(), log_path.c_str(), callback);
+
+    qDebug("getDeviceManufacturerInfo is : %s",  qUtf8Printable(getDeviceManufacturerInfo()));
+
+
+    printf("\nThe product name is %s, and the device manfactureinfo is %s\n", QSysInfo::prettyProductName().toUtf8().constData(), getDeviceManufacturerInfo().toUtf8().constData());
+    frtc_set_system_info(getDeviceManufacturerInfo().toUtf8().constData(), QSysInfo::prettyProductName().toUtf8().constData());
 }
+
+QString FMakeCallClient::getDeviceManufacturerInfo()
+{
+    QString ret = "";
+    for(auto f : manufacturerFileList)
+    {
+        if(QFile::exists(f))
+        {
+            QString content = readFileOneLine(f);
+
+#ifdef Q_OS_MAC
+                // For macOS, if we get XML content, parse it
+            if (content.startsWith("<?xml"))
+            {
+                ret.append(parseMacPlist(content));
+            }
+            else
+            {
+                ret.append(content);
+            }
+#else
+                // For Linux, just append as is
+            ret.append(content);
+#endif
+
+            ret.append(" ");
+        }
+    }
+    return ret.trimmed();
+}
+
+QString FMakeCallClient::readFileOneLine(const QString & fileName)
+{
+    QFile file(fileName);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        QString text = in.readLine().trimmed();
+        file.close();
+        return text;
+    } else {
+        return "";
+    }
+}
+
+
+#ifdef Q_OS_MAC
+QString FMakeCallClient::parseMacPlist(const QString &xmlContent)
+{
+    QString manufacturerInfo = "";
+    QXmlStreamReader xml(xmlContent);
+
+    // Debug output to check XML content
+    qDebug() << "XML Content: " << xmlContent;
+
+    while (!xml.atEnd()) {
+        xml.readNext();
+
+        if (xml.isStartElement()) {
+            qDebug() << "Start element: " << xml.name().toString();
+
+            if (xml.name() == "key") {
+                QString key = xml.readElementText();
+                qDebug() << "Key found: " << key;
+
+                if (key == "ProductName") {
+                    xml.readNext();
+                    manufacturerInfo.append("Mac Product: " + xml.readElementText() + " ");
+                }
+                else if (key == "ProductVersion") {
+                    xml.readNext();
+                    manufacturerInfo.append("Version: " + xml.readElementText() + " ");
+                }
+                else if (key == "ProductUserVisibleVersion") {
+                    xml.readNext();
+                    manufacturerInfo.append("User Visible Version: " + xml.readElementText() + " ");
+                }
+            }
+        }
+    }
+
+    // Debug output to check if there was any error during parsing
+    if (xml.hasError()) {
+        qDebug() << "Error parsing XML: " << xml.errorString();
+        //manufacturerInfo = "MacBookPro";
+        //return "Error parsing plist";
+    }
+
+    manufacturerInfo = "MacBookPro";
+    return manufacturerInfo;
+}
+#endif
 
 
 void FMakeCallClient::make_call(FRTCSDKCallParam call_param,
@@ -534,7 +647,7 @@ void FMakeCallClient::mute_micphone(bool mute_micphone)
     this->audio_mute = mute_micphone;
     frtc_local_audio_mute(mute_micphone);
 
-    //SDKDeviceContext::getInstance()->muteMicrophone(mute_micphone);
+    SDKDeviceContext::getInstance()->muteMicrophone(mute_micphone);
 }
 
 void FMakeCallClient::drop_call()
