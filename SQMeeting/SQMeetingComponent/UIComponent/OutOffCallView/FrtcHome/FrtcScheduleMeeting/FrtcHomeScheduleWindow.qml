@@ -39,6 +39,7 @@ Window {
     property alias muteEntry: meeting_muteJoin_checkbox.checked
     property alias watermark: meeting_watermark_checkbox.checked
     property alias meetingRoomId: roomnumbercombox.currentText
+    property var currentTimestamp: new Date().getTime();
 
     property var userToken: SDKUserDefaultObject.getUserToken()
     property var recurrenceDayDataList: []
@@ -978,7 +979,8 @@ Window {
 
             FrtcTimeListView {
                 id: startTimePopupView
-                minTime: FrtcTool.getCurrentTimeHM()
+                minTime:FrtcTool.isSameDay(FrtcTool.dateStringToTimestampYMDWHM(startDate+" "+startTime) , currentTimestamp) ?
+                            FrtcTool.getCurrentTimeHM() : "00:00"
 
                 onSelectTimeBlock: function(time) {
                     startDateField.text = time
@@ -988,7 +990,8 @@ Window {
 
             FrtcTimeListView {
                 id: stopTimePopup
-                minTime: FrtcTool.getHalfHourLater(startDateField.text)
+                minTime:FrtcTool.isSameDay(FrtcTool.dateStringToTimestampYMDWHM(startDate+" "+startTime) , FrtcTool.dateStringToTimestampYMDWHM(stopDate+" "+stopTime)) ?
+                            FrtcTool.getHalfHourLater(startDateField.text) : "00:00"
 
                 onSelectTimeBlock: function(time) {
                     stopDateField.text = time
